@@ -29,9 +29,7 @@ function Home() {
 
       try {
         const res = await fetch(
-          `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
-            sValue
-          )}&count=5&language=uz&format=json`
+          `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(sValue)}&count=5&language=uz&format=json`
         )
         const data = await res.json()
         const results = data.results || []
@@ -106,7 +104,7 @@ function Home() {
         error={error}
       />
 
-      <p className="footer-text">Bu sayt SamuraiX tomonidan ishlab chiqilgan (c)</p>
+      <p className="footer-text">Bu sayt SamuraiX tomonidan ishlab chiqilgan ©</p>
     </div>
   )
 }

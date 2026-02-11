@@ -1,42 +1,112 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
+}
+
+.page {
+  width: 100%;
+  max-width: 760px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+  margin-top: 0;
+  margin-bottom: 18px;
   text-align: center;
+  color: #0f2940;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.searchbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.searchbar input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #cfd8e3;
+  font-size: 16px;
+}
+
+.searchbar button {
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #2c7be5;
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.searchbar button:hover {
+  background: #1f66c2;
+}
+
+.search-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-element {
+  text-align: left;
+  border: 1px solid #dbe3ed;
+  border-radius: 10px;
+  padding: 12px;
+  background: #f5f9ff;
+  cursor: pointer;
+}
+
+.search-element.active {
+  border-color: #2c7be5;
+  background: #eaf3ff;
+}
+
+.search-element p {
+  margin: 4px 0;
+}
+
+.city-name {
+  font-weight: 700;
+}
+
+.weather-card {
+  border: 1px solid #dbe3ed;
+  border-radius: 12px;
+  padding: 18px;
+  background: #fbfdff;
+}
+
+.weather-card h3 {
+  margin-top: 0;
+}
+
+.weather-card.error {
+  border-color: #f6b3b3;
+  background: #fff2f2;
+  color: #a93636;
+}
+
+.footer-text {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #667c93;
+}
+
+@media (max-width: 540px) {
+  .page {
+    margin: 20px 12px;
+    padding: 16px;
   }
-  to {
-    transform: rotate(360deg);
+
+  .searchbar {
+    flex-direction: column;
   }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }

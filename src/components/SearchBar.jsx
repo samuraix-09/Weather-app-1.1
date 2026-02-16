@@ -1,23 +1,7 @@
-import { useContext, useState } from 'react'
-import DataContext from '../DataContext'
-
-function SearchBar() {
-  const { setSValue } = useContext(DataContext)
-  const [text, setText] = useState('')
-
-  function handleSubmit(e) {
-    e.preventDefault()
-    setSValue(text.trim())
-  }
-
+function SearchBar({ onSearch }) {
   return (
-    <form className="searchbar" onSubmit={handleSubmit}>
-      <input
-        type="search"
-        placeholder="Shahar nomini kiriting"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
+    <form className="searchbar" onSubmit={(e) => (e.preventDefault(), onSearch(e.target.city.value.trim()))}>
+      <input name="city" type="search" placeholder="Shahar nomini kiriting" />
       <button type="submit">Qidirish</button>
     </form>
   )

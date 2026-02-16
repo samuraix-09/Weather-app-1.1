@@ -1,110 +1,55 @@
-import { useContext, useEffect, useState } from "react"
-import DataContext from "../DataContext"
-import SearchBar from "../components/SearchBar"
-import SearchElement from "../components/SearchElements"
-import WeatherInfo from "../components/WeatherInfo"
+import { useState } from 'react'
+import SearchBar from '../components/SearchBar'
+import SearchElement from '../components/SearchElements'
+import WeatherInfo from '../components/WeatherInfo'
 
 function Home() {
-  const { sValue } = useContext(DataContext)
+  const [cities, setCities] = useState([])
+  const [city, setCity] = useState(null)
+  const [weather, setWeather] = useState(null)
+  const [error, setError] = useState('')
 
-  const [searchElements, setSearchElements] = useState([])
-  const [selectedCity, setSelectedCity] = useState(null)
-  const [weatherData, setWeatherData] = useState(null)
-  const [loadingCities, setLoadingCities] = useState(false)
-  const [loadingWeather, setLoadingWeather] = useState(false)
-  const [error, setError] = useState("")
-
-  useEffect(() => {
-    if (!sValue) {
-      setSearchElements([])
-      setSelectedCity(null)
-      setWeatherData(null)
-      setError("")
-      return
+  async function search(name) {
+    if (!name) return setCities([]), setCity(null), setWeather(null), setError('')
+    setError('')
+    setCity(null)
+    setWeather(null)
+    try {
+      const res = await fetch(
+        `https://geocoding-api.open-meteo.com/v1/search?name=${name}&count=5&language=uz&format=json`,
+      )
+      const list = (await res.json()).results || []
+      setCities(list)
+      if (!list.length) setError(`"${name}" topilmadi.`)
+    } catch {
+      setError('Shaharlarni olishda xatolik.')
     }
+  }
 
-    async function getCityData() {
-      setLoadingCities(true)
-      setError("")
-
-      try {
-        const res = await fetch(
-          `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(sValue)}&count=5&language=uz&format=json`
-        )
-        const data = await res.json()
-        const results = data.results || []
-
-        if (results.length === 0) {
-          setSearchElements([])
-          setSelectedCity(null)
-          setWeatherData(null)
-          setError(`"${sValue}" nomli shahar topilmadi.`)
-          return
-        }
-
-        setSearchElements(results)
-        setSelectedCity(results[0])
-      } catch {
-        setError("Shaharlarni olishda xatolik yuz berdi.")
-      } finally {
-        setLoadingCities(false)
-      }
+  async function select(item) {
+    setCity(item)
+    setError('')
+    try {
+      const res = await fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${item.latitude}&longitude=${item.longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code&timezone=auto`,
+      )
+      setWeather(await res.json())
+    } catch {
+      setError("Ob-havo ma'lumotini olishda xatolik.")
     }
-
-    getCityData()
-  }, [sValue])
-
-  useEffect(() => {
-    if (!selectedCity) {
-      return
-    }
-
-    async function getWeatherData() {
-      setLoadingWeather(true)
-      setError("")
-
-      try {
-        const res = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${selectedCity.latitude}&longitude=${selectedCity.longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code&timezone=auto`
-        )
-        const data = await res.json()
-        setWeatherData(data)
-      } catch {
-        setError("Ob-havo ma'lumotini olishda xatolik yuz berdi.")
-      } finally {
-        setLoadingWeather(false)
-      }
-    }
-
-    getWeatherData()
-  }, [selectedCity])
+  }
 
   return (
     <div className="page">
       <h1>SamaWeather</h1>
-      <SearchBar />
-
-      {loadingCities && <p>Shaharlar qidirilmoqda...</p>}
-
+      <SearchBar onSearch={search} />
       <div className="search-results">
-        {searchElements.map((city) => (
-          <SearchElement
-            key={city.id}
-            city={city}
-            onSelect={setSelectedCity}
-            isActive={selectedCity?.id === city.id}
-          />
+        {cities.map((item) => (
+          <SearchElement key={item.id} city={item} onSelect={select} isActive={city?.id === item.id} />
         ))}
       </div>
-
-      <WeatherInfo
-        city={selectedCity}
-        weatherData={weatherData}
-        loading={loadingWeather}
-        error={error}
-      />
-
-      <p className="footer-text">Bu sayt SamuraiX tomonidan ishlab chiqilgan ©</p>
+      <WeatherInfo city={city} weatherData={weather} error={error} />
+      <p className="footer-text">Bu sayt SamuraiX tomonidan ishlab chiqilgan</p>
     </div>
   )
 }

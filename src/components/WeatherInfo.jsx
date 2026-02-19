@@ -20,7 +20,7 @@ const labels = {
 
 function WeatherInfo({ city, weatherData, error }) {
   if (error) return <div className="weather-card error">{error}</div>
-  if (!city || !weatherData?.current) return <div className="weather-card">Shahar tanlang.</div>
+  if (!city || !weatherData || !weatherData.current) return <div className="weather-card">Shahar tanlang.</div>
 
   const c = weatherData.current
 

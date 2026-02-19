@@ -1,11 +1,79 @@
+:root {
+  --bg-deep: #0b3e72;
+  --bg-mid: #1a62a8;
+  --bg-soft: #2b80cd;
+  --ink: #ecf7ff;
+  --ink-soft: #b8dcf5;
+}
+
 * {
   box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
 }
 
 body {
   margin: 0;
   min-width: 320px;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(180deg, #dff2ff 0%, #edf6ff 45%, #f7fbff 100%);
-  color: #17324d;
+  font-family: "Montserrat", "Segoe UI", Tahoma, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 500px at 10% -10%, rgba(130, 204, 255, 0.2), transparent 60%),
+    radial-gradient(900px 400px at 90% 0%, rgba(174, 223, 255, 0.2), transparent 60%),
+    linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 42%, var(--bg-soft) 100%);
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(220px 70px at 20% 18%, rgba(255, 255, 255, 0.2), transparent 75%),
+    radial-gradient(260px 70px at 78% 23%, rgba(255, 255, 255, 0.16), transparent 75%),
+    radial-gradient(180px 60px at 66% 12%, rgba(255, 255, 255, 0.14), transparent 72%);
+  animation: cloudShift 24s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 78px;
+  background: linear-gradient(180deg, rgba(8, 41, 77, 0.96), rgba(11, 61, 110, 0.88));
+  border-bottom: 1px solid rgba(168, 217, 251, 0.26);
+  box-shadow: 0 14px 30px rgba(3, 26, 54, 0.3);
+  z-index: 1;
+}
+
+#root {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes cloudShift {
+  0% {
+    transform: translateX(-1.5%);
+  }
+  50% {
+    transform: translateX(1.5%);
+  }
+  100% {
+    transform: translateX(-1.5%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
 }

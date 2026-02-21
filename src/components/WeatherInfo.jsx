@@ -18,7 +18,7 @@ const labels = {
   95: "Momaqaldiroq",
 }
 
-function WeatherInfo({ city, weatherData, error }) {
+function WeatherInfo({ city, weatherData, error , units }) {
   if (error) return <div className="weather-card error">{error}</div>
   if (!city || !weatherData || !weatherData.current) return <div className="weather-card">Shahar tanlang.</div>
 
@@ -30,9 +30,9 @@ function WeatherInfo({ city, weatherData, error }) {
         {city.name}, {city.country}
       </h3>
       <p>Holat: {labels[c.weather_code] || "Noma'lum ob-havo"}</p>
-      <p>Harorat: {c.temperature_2m} C</p>
+      <p>Harorat: {c.temperature_2m} {units === 'imperial' ? 	"°F" :"°C"}</p>
       <p>Namlik: {c.relative_humidity_2m}%</p>
-      <p>Shamol tezligi: {c.wind_speed_10m} km/soat</p>
+      <p>Shamol tezligi: {c.wind_speed_10m} {units === 'imperial' ? "km/h" : "mph"}</p>
     </div>
   )
 }

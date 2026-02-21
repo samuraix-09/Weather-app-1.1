@@ -121,7 +121,7 @@ function Home() {
           </div>
         </div>
       )}
-      <p className="footer-text">Bu sayt SamuraiX tomonidan ishlab chiqilgan</p>
+      <p className="footer-text">©Bu sayt SamuraiX tomonidan ishlab chiqilgan</p>
     </div>
   )
 }
